@@ -242,31 +242,30 @@ address {
   inset: 0;
   background-image: url('/images/hero.jpg');
   background-size: cover;
-  background-position: center top;
-  opacity: 0.25;
+  background-position: center;
+  opacity: 1;
 }
 
 .hero-vignette {
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse at 30% 40%, transparent 0%, var(--bg-primary) 90%);
+  background: linear-gradient(to top, rgba(26,26,24,0.95) 0%, rgba(26,26,24,0.5) 40%, rgba(26,26,24,0.15) 70%, rgba(26,26,24,0.05) 100%);
 }
 
 .hero-content {
   position: relative;
   z-index: 1;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  align-items: center;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
   width: 100%;
   max-width: 1400px;
   margin: 0 auto;
-  padding: 120px 32px 80px;
+  padding: 120px 32px 120px;
   gap: 48px;
 }
 
 .hero-poster {
-  grid-column: 1;
 }
 
 .hero-title {
@@ -292,18 +291,6 @@ address {
   letter-spacing: 0.06em;
   color: var(--accent);
   margin-top: 8px;
-}
-
-.hero-image {
-  grid-column: 2;
-  position: relative;
-}
-
-.hero-image img {
-  width: 100%;
-  aspect-ratio: 3/4;
-  object-fit: cover;
-  border-radius: 0;
 }
 
 .hero-scroll {
@@ -734,7 +721,7 @@ address {
 .reviews-content {
   position: relative;
   z-index: 1;
-  max-width: 800px;
+  max-width: 1000px;
   margin: 0 auto;
 }
 
@@ -773,33 +760,43 @@ address {
   letter-spacing: 0.08em;
 }
 
-.reviews-quote {
-  position: relative;
-  padding: 0;
-  margin: 0 0 48px;
-  border: none;
+.reviews-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  margin-bottom: 48px;
 }
 
-.quote-mark {
-  position: absolute;
-  top: -60px;
-  left: -16px;
-  font-family: var(--font-body);
-  font-size: 10rem;
-  line-height: 1;
+.review-card {
+  position: relative;
+  padding: 24px 24px 24px 32px;
+  background: var(--bg-surface);
+  border-left: 3px solid var(--accent);
+}
+
+.review-card-stars {
+  display: flex;
+  gap: 2px;
   color: var(--accent);
-  opacity: 0.3;
-  pointer-events: none;
+  margin-bottom: 12px;
 }
 
-.reviews-quote p {
+.review-card-name {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.review-card-text {
   font-family: var(--font-body);
-  font-size: 1.5rem;
+  font-size: 1rem;
   font-style: italic;
-  line-height: 1.5;
+  line-height: 1.6;
   color: var(--text-secondary);
-  position: relative;
-  z-index: 1;
 }
 
 .reviews-cta {
@@ -885,29 +882,11 @@ address {
   align-items: stretch;
 }
 
-.map-placeholder {
+.contact-map iframe {
+  border: none;
+  display: block;
   width: 100%;
-  min-height: 320px;
-  background: var(--bg-primary);
-  border: 1px solid var(--border);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 16px;
-  text-align: center;
-  padding: 48px 24px;
-  color: var(--text-secondary);
-  font-size: 0.95rem;
-}
-
-.map-placeholder svg {
-  color: var(--accent);
-  margin-bottom: 8px;
-}
-
-.map-placeholder .btn-accent {
-  margin-top: 8px;
+  min-height: 400px;
 }
 
 /* ---- Footer ---- */
@@ -990,23 +969,11 @@ address {
 /* ---- Responsive ---- */
 @media (max-width: 1024px) {
   .hero-content {
-    grid-template-columns: 1fr;
-    gap: 32px;
-    padding: 100px 24px 80px;
+    padding: 100px 24px 100px;
   }
 
   .hero-title {
     font-size: clamp(4rem, 12vw, 12rem);
-  }
-
-  .hero-image {
-    grid-column: 1;
-    max-width: 400px;
-    margin: 0 auto;
-  }
-
-  .hero-image img {
-    aspect-ratio: 4/3;
   }
 
   .philosophy-grid {
@@ -1065,15 +1032,11 @@ address {
   }
 
   .hero-content {
-    padding: 80px 20px 60px;
+    padding: 80px 20px 80px;
   }
 
   .hero-title {
     font-size: clamp(3rem, 18vw, 8rem);
-  }
-
-  .hero-image img {
-    aspect-ratio: 1;
   }
 
   .hero-scroll {
@@ -1116,22 +1079,13 @@ address {
     font-size: 4rem;
   }
 
-  .quote-mark {
-    font-size: 6rem;
-    top: -40px;
-    left: -8px;
-  }
-
-  .reviews-quote p {
-    font-size: 1.15rem;
+  .reviews-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
   }
 
   .contact-headline {
     font-size: clamp(2.5rem, 12vw, 6rem);
-  }
-
-  .map-placeholder {
-    min-height: 240px;
   }
 
   .footer {

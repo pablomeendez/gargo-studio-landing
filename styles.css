@@ -839,31 +839,6 @@ address {
   align-items: stretch;
 }
 
-.map-placeholder {
-  width: 100%;
-  min-height: 320px;
-  background: var(--bg-primary);
-  border: 1px solid var(--border);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 16px;
-  text-align: center;
-  padding: 48px 24px;
-  color: var(--text-secondary);
-  font-size: 0.95rem;
-}
-
-.map-placeholder svg {
-  color: var(--accent);
-  margin-bottom: 8px;
-}
-
-.map-placeholder .btn-accent {
-  margin-top: 8px;
-}
-
 /* ---- Footer ---- */
 .footer {
   position: relative;

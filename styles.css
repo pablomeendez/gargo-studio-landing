@@ -283,16 +283,6 @@ address {
   display: block;
 }
 
-.hero-subtitle {
-  font-family: var(--font-body);
-  font-size: clamp(1.5rem, 3vw, 2.5rem);
-  font-style: italic;
-  font-weight: 400;
-  letter-spacing: 0.06em;
-  color: var(--accent);
-  margin-top: 8px;
-}
-
 .hero-scroll {
   position: absolute;
   bottom: 40px;
@@ -1041,10 +1031,6 @@ address {
 
   .hero-scroll {
     bottom: 24px;
-  }
-
-  .hero-subtitle {
-    font-size: clamp(1.1rem, 4vw, 1.5rem);
   }
 
   .section-watermark {

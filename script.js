@@ -194,11 +194,40 @@
     });
   }
 
+  // ---- Parallax Hero Background ----
+  function initParallax() {
+    window.addEventListener('scroll', function () {
+      var heroBg = document.querySelector('.hero-bg');
+      if (heroBg) {
+        var scrollY = window.scrollY || window.pageYOffset;
+        var heroSection = document.querySelector('.hero');
+        if (heroSection && scrollY < heroSection.offsetHeight) {
+          heroBg.style.transform = 'translateY(' + (scrollY * 0.3) + 'px)';
+        }
+      }
+    });
+  }
+
+  // ---- Scroll Progress ----
+  function initScrollProgress() {
+    window.addEventListener('scroll', function () {
+      var scrollProgress = document.querySelector('.scroll-progress');
+      if (scrollProgress) {
+        var scrollTop = window.scrollY || window.pageYOffset;
+        var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        var scrollPercent = (scrollTop / docHeight) * 100;
+        scrollProgress.style.width = scrollPercent + '%';
+      }
+    });
+  }
+
   // ---- Init ----
   function init() {
     initScrollAnimations();
     initHeroLoad();
     initSmoothScroll();
+    initParallax();
+    initScrollProgress();
   }
 
   // Run on DOM ready

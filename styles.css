@@ -86,6 +86,18 @@ address {
   background-size: 256px 256px;
 }
 
+/* ---- Scroll Progress ---- */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background: var(--accent);
+  z-index: 10001;
+  transition: width 0.1s linear;
+}
+
 /* ---- Accessibility ---- */
 .skip-link {
   position: absolute;
@@ -244,6 +256,7 @@ address {
   background-size: cover;
   background-position: center;
   opacity: 1;
+  will-change: transform;
 }
 
 .hero-bg::after {
@@ -688,7 +701,7 @@ address {
 .reviews-content {
   position: relative;
   z-index: 1;
-  max-width: 800px;
+  max-width: 1100px;
   margin: 0 auto;
 }
 
@@ -727,33 +740,75 @@ address {
   letter-spacing: 0.08em;
 }
 
-.reviews-quote {
-  position: relative;
-  padding: 0;
-  margin: 0 0 48px;
-  border: none;
+.reviews-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-bottom: 48px;
 }
 
-.quote-mark {
-  position: absolute;
-  top: -60px;
-  left: -16px;
-  font-family: var(--font-body);
-  font-size: 10rem;
-  line-height: 1;
+.review-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  padding: 32px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  transition: border-color 0.3s, transform 0.3s var(--ease-out-expo);
+}
+
+.review-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+
+.review-stars {
+  display: flex;
+  gap: 2px;
   color: var(--accent);
-  opacity: 0.3;
-  pointer-events: none;
 }
 
-.reviews-quote p {
+.review-text {
   font-family: var(--font-body);
-  font-size: 1.5rem;
+  font-size: 1.05rem;
   font-style: italic;
-  line-height: 1.5;
+  line-height: 1.55;
   color: var(--text-secondary);
-  position: relative;
-  z-index: 1;
+  flex: 1;
+}
+
+.review-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+
+.review-name {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-primary);
+}
+
+.review-service {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.review-date {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-top: 4px;
 }
 
 .reviews-cta {
@@ -880,6 +935,7 @@ address {
 [data-animate] {
   opacity: 0;
   will-change: transform, opacity;
+  transition: opacity 0.6s ease-out, transform 0.6s var(--ease-out-expo);
 }
 
 [data-animate].animated {
@@ -893,7 +949,6 @@ address {
 
 [data-animate="fade-up"].animated {
   transform: translateY(0);
-  transition: opacity 0.8s var(--ease-out-expo), transform 0.8s var(--ease-out-expo);
 }
 
 /* Slide Left */
@@ -903,7 +958,6 @@ address {
 
 [data-animate="slide-left"].animated {
   transform: translateX(0);
-  transition: opacity 0.8s var(--ease-out-expo), transform 0.8s var(--ease-out-expo);
 }
 
 /* Slide Right */
@@ -913,7 +967,15 @@ address {
 
 [data-animate="slide-right"].animated {
   transform: translateX(0);
-  transition: opacity 0.8s var(--ease-out-expo), transform 0.8s var(--ease-out-expo);
+}
+
+/* Scale Fade */
+[data-animate="scale-fade"] {
+  transform: scale(0.92);
+}
+
+[data-animate="scale-fade"].animated {
+  transform: scale(1);
 }
 
 /* ---- Responsive ---- */
@@ -962,6 +1024,10 @@ address {
     font-size: clamp(3rem, 8vw, 8rem);
     margin-bottom: 40px;
   }
+
+  .reviews-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 @media (max-width: 640px) {
@@ -1005,14 +1071,8 @@ address {
     font-size: 4rem;
   }
 
-  .quote-mark {
-    font-size: 6rem;
-    top: -40px;
-    left: -8px;
-  }
-
-  .reviews-quote p {
-    font-size: 1.15rem;
+  .reviews-grid {
+    grid-template-columns: 1fr;
   }
 
   .contact-headline {

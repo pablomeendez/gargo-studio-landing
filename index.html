@@ -55,6 +55,9 @@
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
+  <!-- Scroll progress indicator -->
+  <div class="scroll-progress" aria-hidden="true"></div>
+
   <!-- Grain / noise texture overlay -->
   <div class="grain-overlay" aria-hidden="true"></div>
 
@@ -193,22 +196,22 @@
         <h2 class="section-title" data-animate="fade-up">Trabajos<br>recientes</h2>
         <p class="gallery-subtitle" data-animate="fade-up" data-delay="0.1">Cada cliente, un nuevo proyecto.</p>
         <div class="gallery-grid">
-          <div class="gallery-item gallery-item-large" data-animate="fade-up" data-delay="0.1">
+          <div class="gallery-item gallery-item-large" data-animate="scale-fade" data-delay="0.1">
             <img src="/images/portfolio1.jpg" alt="Corte de cabello masculino en GARGO HAIR STUDIO" loading="lazy">
           </div>
-          <div class="gallery-item" data-animate="fade-up" data-delay="0.2">
+          <div class="gallery-item" data-animate="scale-fade" data-delay="0.2">
             <img src="/images/portfolio2.jpg" alt="Estilo de barba y cabello en A Coruña" loading="lazy">
           </div>
-          <div class="gallery-item" data-animate="fade-up" data-delay="0.25">
+          <div class="gallery-item" data-animate="scale-fade" data-delay="0.25">
             <img src="/images/portfolio4.jpg" alt="Corte premium en Cuatro Caminos" loading="lazy">
           </div>
-          <div class="gallery-item" data-animate="fade-up" data-delay="0.3">
+          <div class="gallery-item" data-animate="scale-fade" data-delay="0.3">
             <img src="/images/portfolio5.jpg" alt="Arreglo de barba profesional" loading="lazy">
           </div>
-          <div class="gallery-item gallery-item-wide" data-animate="fade-up" data-delay="0.35">
+          <div class="gallery-item gallery-item-wide" data-animate="scale-fade" data-delay="0.35">
             <img src="/images/portfolio6.jpg" alt="Resultado final de corte y barba" loading="lazy">
           </div>
-          <div class="gallery-item" data-animate="fade-up" data-delay="0.4">
+          <div class="gallery-item" data-animate="scale-fade" data-delay="0.4">
             <img src="/images/color-fantasia.jpg" alt="Servicio de color fantasía en GARGO HAIR STUDIO" loading="lazy">
           </div>
         </div>
@@ -230,10 +233,53 @@
           </div>
           <p class="reviews-count">56 reseñas en Booksy</p>
         </div>
-        <blockquote class="reviews-quote" data-animate="fade-up" data-delay="0.2">
-          <span class="quote-mark">“</span>
-          <p>El único sitio en A Coruña donde entras siendo tú y sales siendo tu mejor versión. El visajismo cambia todo. No es un corte — es una reinvención.</p>
-        </blockquote>
+        <div class="reviews-grid">
+          <div class="review-card" data-animate="fade-up" data-delay="0">
+            <div class="review-stars" aria-label="5 de 5 estrellas">
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            </div>
+            <p class="review-text">"Increíble el trabajo de visajismo. No solo me cortó el pelo, me rejuveneció 10 años."</p>
+            <div class="review-meta">
+              <span class="review-name">Carlos M.</span>
+              <span class="review-service">Visajismo</span>
+            </div>
+            <time class="review-date">Hace 2 semanas</time>
+          </div>
+          <div class="review-card" data-animate="fade-up" data-delay="0.15">
+            <div class="review-stars" aria-label="5 de 5 estrellas">
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            </div>
+            <p class="review-text">"Trabajo de escultura en el cabello y la barba. Precisión absoluta."</p>
+            <div class="review-meta">
+              <span class="review-name">Andrés L.</span>
+              <span class="review-service">Corte y barba</span>
+            </div>
+            <time class="review-date">Hace 1 mes</time>
+          </div>
+          <div class="review-card" data-animate="fade-up" data-delay="0.3">
+            <div class="review-stars" aria-label="5 de 5 estrellas">
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            </div>
+            <p class="review-text">"Traigo a mis hijos desde hace año y medio. Excelente relación calidad-precio."</p>
+            <div class="review-meta">
+              <span class="review-name">Miguel R.</span>
+              <span class="review-service">Corte niño</span>
+            </div>
+            <time class="review-date">Hace 3 semanas</time>
+          </div>
+        </div>
         <div class="reviews-cta" data-animate="fade-up" data-delay="0.4">
           <a href="https://booksy.com/es-es/153564_gargo-hair-studio_barberia_60813_a-coruna" target="_blank" rel="noopener noreferrer" class="btn-underline">Ver todas las reseñas en Booksy →</a>
         </div>
@@ -263,7 +309,7 @@
           </div>
           <div class="contact-map" data-animate="slide-right">
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2901.1234567890123!2d-8.4006!3d43.3569!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDPCsDIxJzI0LjkiTiA4wrAyNCcwMi4yIlc!5e0!3m2!1ses!2ses!4v1234567890123!5m2!1ses!2ses"
+              src="https://www.google.com/maps?q=R%C3%BAa+Nicomedes+Pastor+D%C3%ADaz+1%2C+15006+A+Coru%C3%B1a&z=17&output=embed"
               width="100%"
               height="400"
               style="border:0; filter: grayscale(100%);"

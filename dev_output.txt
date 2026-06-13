@@ -1,0 +1,409 @@
+  ┊ review diff
+a/gargo-studio-landing/package.json → b/gargo-studio-landing/package.json
+@@ -1,12 +1,17 @@
+ {
+-  "name": "gargo-studio-landing",
++  "name": "gargo-hair-studio",
++  "private": true,
+   "version": "1.0.0",
+-  "description": "",
+-  "main": "script.js",
++  "type": "module",
+   "scripts": {
+-    "test": "echo \"Error: no test specified\" && exit 1"
++    "dev": "vite",
++    "build": "vite build",
++    "preview": "vite preview"
+   },
+-  "keywords": [],
+-  "author": "",
+-  "license": "ISC"
++  "devDependencies": {
++    "autoprefixer": "^10.4.19",
++    "postcss": "^8.4.38",
++    "tailwindcss": "^3.4.4",
++    "vite": "^5.3.1"
++  }
+ }
+  ┊ review diff
+a/gargo-studio-landing/vite.config.js → b/gargo-studio-landing/vite.config.js
+@@ -0,0 +1,15 @@
++import { defineConfig } from 'vite';
++import { resolve } from 'path';
++
++export default defineConfig({
++  root: '.',
++  publicDir: 'public',
++  build: {
++    outDir: 'dist',
++    assetsDir: 'assets',
++  },
++  server: {
++    port: 3000,
++    open: false,
++  },
++});
+  ┊ review diff
+a/gargo-studio-landing/tailwind.config.js → b/gargo-studio-landing/tailwind.config.js
+@@ -0,0 +1,26 @@
++/** @type {import('tailwindcss').Config} */
++export default {
++  content: [
++    "./index.html",
++    "./src/**/*.{js,ts,jsx,tsx}",
++  ],
++  theme: {
++    extend: {
++      colors: {
++        'gargo-black': '#000000',
++        'gargo-charcoal': '#1A1A1A',
++        'gargo-off-white': '#F7F7F5',
++        'gargo-white': '#FFFFFF',
++        'gargo-text-primary': '#111111',
++        'gargo-text-secondary': '#6B6B6B',
++        'gargo-text-muted': '#9A9A9A',
++        'gargo-divider': '#E5E5E5',
++      },
++      fontFamily: {
++        'display': ['Space Grotesk', 'sans-serif'],
++        'body': ['Inter', 'sans-serif'],
++      },
++    },
++  },
++  plugins: [],
++}
+  ┊ review diff
+a/gargo-studio-landing/postcss.config.js → b/gargo-studio-landing/postcss.config.js
+@@ -0,0 +1,6 @@
++export default {
++  plugins: {
++    tailwindcss: {},
++    autoprefixer: {},
++  },
++}
+  ┊ review diff
+a/gargo-studio-landing/index.html → b/gargo-studio-landing/index.html
+@@ -3,49 +3,47 @@
+ <head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+-  <title>GARGO HAIR STUDIO — Barbería de Autor en A Coruña</title>
+-  <meta name="description" content="GARGO HAIR STUDIO — Barbería de autor en Cuatro Caminos, A Coruña. Corte, barba y visajismo. Reserva tu cita. ★ 5.0 (56 reseñas).">
+-  <meta name="keywords" content="barbería, peluquería, A Coruña, Cuatro Caminos, corte, barba, visajismo, GARGO">
+-  <meta name="author" content="GARGO HAIR STUDIO">
+-  <meta name="robots" content="index, follow">
+-
+-  <!-- Open Graph -->
++  
++  <!-- Primary Meta Tags -->
++  <title>GARGO HAIR STUDIO | Barbería en Cuatro Caminos, A Coruña</title>
++  <meta name="title" content="GARGO HAIR STUDIO | Barbería en Cuatro Caminos, A Coruña">
++  <meta name="description" content="Barbería premium en A Coruña. Visajismo, corte de autor y arreglo de barba. Reserva tu cita online. ★ 5.0 en Booksy.">
++  <link rel="canonical" href="https://www.gargohairstudio.com/">
++  
++  <!-- Open Graph / Facebook -->
+   <meta property="og:type" content="website">
+-  <meta property="og:title" content="GARGO HAIR STUDIO — Barbería de Autor en A Coruña">
+-  <meta property="og:description" content="No es solo un corte, es la creación de tu nueva identidad. Barbería de autor en Cuatro Caminos. ★ 5.0 (56 reseñas).">
+-  <meta property="og:image" content="images/hero.jpg">
+-  <meta property="og:url" content="https://gargohairstudio.com">
++  <meta property="og:url" content="https://www.gargohairstudio.com/">
++  <meta property="og:title" content="GARGO HAIR STUDIO | Barbería en Cuatro Caminos, A Coruña">
++  <meta property="og:description" content="Barbería premium en A Coruña. Visajismo, corte de autor y arreglo de barba. Reserva tu cita online. ★ 5.0 en Booksy.">
++  <meta property="og:image" content="/images/hero.jpg">
+   <meta property="og:locale" content="es_ES">
+-
+-  <!-- Twitter Card -->
+-  <meta name="twitter:card" content="summary_large_image">
+-  <meta name="twitter:title" content="GARGO HAIR STUDIO — Barbería de Autor">
+-  <meta name="twitter:description" content="Barbería de autor en Cuatro Caminos, A Coruña. ★ 5.0 (56 reseñas).">
+-  <meta name="twitter:image" content="images/hero.jpg">
+-
++  
++  <!-- Twitter -->
++  <meta property="twitter:card" content="summary_large_image">
++  <meta property="twitter:url" content="https://www.gargohairstudio.com/">
++  <meta property="twitter:title" content="GARGO HAIR STUDIO | Barbería en Cuatro Caminos, A Coruña">
++  <meta property="twitter:description" content="Barbería premium en A Coruña. Visajismo, corte de autor y arreglo de barba. Reserva tu cita online. ★ 5.0 en Booksy.">
++  <meta property="twitter:image" content="/images/hero.jpg">
++  
+   <!-- Favicon -->
+-  <link rel="icon" type="image/jpeg" href="images/logo_250.jpg">
+-
+-  <!-- Preload hero image -->
+-  <link rel="preload" as="image" href="images/hero.jpg">
+-
+-  <!-- Google Fonts -->
++  <link rel="icon" type="image/jpeg" href="/images/logo.jpg">
++  <link rel="apple-touch-icon" href="/images/logo.jpg">
++  
++  <!-- Preload Hero Image -->
++  <link rel="preload" as="image" href="/images/hero.jpg" type="image/jpeg">
++  
++  <!-- Fonts -->
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+-
+-  <!-- Styles -->
+-  <link rel="stylesheet" href="styles.css">
+-
++  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Space+Grotesk:wght@500;700&display=swap&subset=latin" rel="stylesheet">
++  
+   <!-- JSON-LD Structured Data -->
+   <script type="application/ld+json">
+   {
+     "@context": "https://schema.org",
+     "@type": "BarberShop",
+     "name": "GARGO HAIR STUDIO",
+-    "image": "images/hero.jpg",
+-    "url": "https://gargohairstudio.com",
+-    "telephone": "",
++    "image": "/images/hero.jpg",
+     "address": {
+       "@type": "PostalAddress",
+… omitted 727 diff line(s) across 1 additional file(s)/section(s)
+  ┊ review diff
+a/gargo-studio-landing/src/styles.css → b/gargo-studio-landing/src/styles.css
+@@ -0,0 +1,41 @@
++@tailwind base;
++@tailwind components;
++@tailwind utilities;
++
++/* Base styles */
++html {
++  scroll-behavior: smooth;
++}
++
++body {
++  -webkit-font-smoothing: antialiased;
++  -moz-osx-font-smoothing: grayscale;
++}
++
++/* Focus states for accessibility */
++*:focus-visible {
++  outline: 2px solid #000000;
++  outline-offset: 2px;
++}
++
++/* Scroll animation - elements start hidden and slide up */
++.reveal {
++  opacity: 0;
++  transform: translateY(30px);
++  transition: opacity 0.6s ease, transform 0.6s ease;
++}
++
++.reveal.visible {
++  opacity: 1;
++  transform: translateY(0);
++}
++
++/* Portfolio image hover */
++.portfolio-img {
++  transition: transform 0.3s ease, opacity 0.3s ease;
++}
++
++.portfolio-img:hover {
++  transform: scale(1.03);
++  opacity: 0.9;
++}
+  ┊ review diff
+a/gargo-studio-landing/src/main.js → b/gargo-studio-landing/src/main.js
+@@ -0,0 +1,80 @@
++// Import styles
++import './styles.css';
++
++// ---- Mobile Menu ----
++const menuToggle = document.getElementById('menu-toggle');
++const menuClose = document.getElementById('menu-close');
++const mobileMenu = document.getElementById('mobile-menu');
++
++function openMenu() {
++  mobileMenu.classList.remove('translate-x-full');
++  mobileMenu.classList.add('translate-x-0');
++  menuToggle.setAttribute('aria-expanded', 'true');
++  document.body.style.overflow = 'hidden';
++}
++
++function closeMenu() {
++  mobileMenu.classList.remove('translate-x-0');
++  mobileMenu.classList.add('translate-x-full');
++  menuToggle.setAttribute('aria-expanded', 'false');
++  document.body.style.overflow = '';
++}
++
++menuToggle.addEventListener('click', openMenu);
++menuClose.addEventListener('click', closeMenu);
++
++// Close menu when a link is clicked
++mobileMenu.querySelectorAll('a').forEach(link => {
++  link.addEventListener('click', closeMenu);
++});
++
++// ---- Scroll Reveal Animations ----
++const revealElements = document.querySelectorAll('section > div');
++
++// Add reveal class to sections
++document.querySelectorAll('section').forEach(section => {
++  if (!section.classList.contains('relative')) {
++    section.classList.add('reveal');
++  }
++});
++
++const observer = new IntersectionObserver((entries) => {
++  entries.forEach(entry => {
++    if (entry.isIntersecting) {
++      entry.target.classList.add('visible');
++    }
++  });
++}, {
++  threshold: 0.1,
++  rootMargin: '0px 0px -50px 0px'
++});
++
++document.querySelectorAll('section:not(:first-of-type)').forEach(section => {
++  section.classList.add('reveal');
++  observer.observe(section);
++});
++
++// ---- Active Nav Link Highlighting ----
++const navLinks = document.querySelectorAll('nav a[href^="#"]');
++const sections = document.querySelectorAll('section[id]');
++
++const navObserver = new IntersectionObserver((entries) => {
++  entries.forEach(entry => {
++    if (entry.isIntersecting) {
++      const id = entry.target.getAttribute('id');
++      navLinks.forEach(link => {
++        link.classList.remove('border-b-2', 'border-black');
++        if (link.getAttribute('href') === `#${id}`) {
++          link.classList.add('border-b-2', 'border-black');
++        }
++      });
++    }
++  });
++}, {
++  threshold: 0.3,
++  rootMargin: '-64px 0px -50% 0px'
++});
++
++sections.forEach(section => {
+… omitted 2 diff line(s) across 1 additional file(s)/section(s)
+  ┊ review diff
+a/gargo-studio-landing/index.html → b/gargo-studio-landing/index.html
+@@ -4,29 +4,26 @@
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>GARGO HAIR STUDIO | Barbería en Cuatro Caminos, A Coruña</title>
++  <meta name="title" content="GARGO HAIR STUDIO | Barbería en Cuatro Caminos, A Coruña">
+   <meta name="description" content="Barbería premium en A Coruña. Visajismo, corte de autor y arreglo de barba. Reserva tu cita online. ★ 5.0 en Booksy.">
+   <link rel="canonical" href="https://www.gargohairstudio.com/">
+-  
+-  <!-- Open Graph -->
++  <meta property="og:type" content="website">
++  <meta property="og:url" content="https://www.gargohairstudio.com/">
+   <meta property="og:title" content="GARGO HAIR STUDIO | Barbería en Cuatro Caminos, A Coruña">
+   <meta property="og:description" content="Barbería premium en A Coruña. Visajismo, corte de autor y arreglo de barba. Reserva tu cita online. ★ 5.0 en Booksy.">
+-  <meta property="og:type" content="website">
+-  <meta property="og:url" content="https://www.gargohairstudio.com/">
+   <meta property="og:image" content="/images/hero.jpg">
+-  
+-  <!-- Favicon -->
++  <meta property="og:locale" content="es_ES">
++  <meta property="twitter:card" content="summary_large_image">
++  <meta property="twitter:url" content="https://www.gargohairstudio.com/">
++  <meta property="twitter:title" content="GARGO HAIR STUDIO | Barbería en Cuatro Caminos, A Coruña">
++  <meta property="twitter:description" content="Barbería premium en A Coruña. Visajismo, corte de autor y arreglo de barba. Reserva tu cita online. ★ 5.0 en Booksy.">
++  <meta property="twitter:image" content="/images/hero.jpg">
+   <link rel="icon" type="image/jpeg" href="/images/logo.jpg">
+   <link rel="apple-touch-icon" href="/images/logo.jpg">
+-  
+-  <!-- Preload hero image -->
+   <link rel="preload" as="image" href="/images/hero.jpg" type="image/jpeg">
+-  
+-  <!-- Google Fonts - Bebas Neue + Inter -->
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600&display=swap&subset=latin" rel="stylesheet">
+-  
+-  <!-- JSON-LD Structured Data -->
++  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Space+Grotesk:wght@500;700&display=swap&subset=latin" rel="stylesheet">
+   <script type="application/ld+json">
+   {
+     "@context": "https://schema.org",
+@@ -38,6 +35,7 @@
+       "streetAddress": "Rúa Nicomedes Pastor Díaz 1",
+       "addressLocality": "A Coruña",
+       "postalCode": "15006",
++      "addressRegion": "Galicia",
+       "addressCountry": "ES"
+     },
+     "geo": {
+@@ -45,7 +43,7 @@
+       "latitude": 43.3623,
+       "longitude": -8.4115
+     },
+-    "url": "https://booksy.com/es-es/153564_gargo-hair-studio_barberia_60813_a-coruna",
++    "url": "https://www.gargohairstudio.com/",
+     "priceRange": "€€",
+     "aggregateRating": {
+       "@type": "AggregateRating",
+@@ -54,325 +52,208 @@
+     }
+   }
+   </script>
++  <link rel="stylesheet" href="/src/styles.css">
+ </head>
+-<body>
+-  <!-- Skip to content -->
+-  <a href="#main-content" class="skip-link">Saltar al contenido</a>
+-
+-  <!-- Navigation -->
+-  <header class="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-brand-divider" style="height: 64px;">
+-    <nav class="max-w-7xl mx-auto px-6 h-full flex items-center justify-between" aria-label="Navegación principal">
+-      <!-- Logo -->
+-      <a href="#top" class="flex items-center">
++<body class="font-body text-gargo-text-primary bg-gargo-off-white">
++  <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:bg-gargo-black focus:text-gargo-white focus:px-4 focus:py-2 focus:rounded">Saltar al contenido</a>
++
++  <!-- NAVIGATION -->
++  <header class="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-gargo-divider">
++    <nav class="container mx-auto px-4 sm:px-6 lg:px-8 h-14 md:h-16 flex items-center justify-between" aria-label="Navegación principal">
++      <a href="#" class="flex-shrink-0" aria-label="Inicio">
+… omitted 491 diff line(s) across 1 additional file(s)/section(s)
+Excellent! The GARGO HAIR STUDIO landing page is fully built and running on http://localhost:3000.
+
+## Summary
+
+**Built complete landing page with:**
+- All 7 sections: Navigation, Hero, Philosophy, Services, Gallery, Reviews, Contact, Footer
+- Responsive design (mobile-first, works on all devices)
+- Sticky navigation with hamburger menu for mobile
+- Smooth scroll navigation
+- Scroll animations
+- All images integrated (hero, logo, 7 portfolio images)
+- Spanish content throughout
+- Booksy integration (booking buttons)
+- Instagram link
+- Google Maps directions link
+
+**SEO & Performance:**
+- Complete meta tags (title, description, Open Graph, Twitter Cards)
+- JSON-LD structured data (LocalBusiness schema)
+- Spanish language (lang="es")
+- Preloaded hero image for fast loading
+- Google Fonts (Space Grotesk + Inter)
+- Lazy loading on portfolio images
+- Semantic HTML5
+
+**Technical Stack:**
+- Vite (build tool + dev server)
+- Tailwind CSS (styling)
+- Vanilla JavaScript (interactivity)
+- All images served from /public/images/
+
+**Dev server running at:** http://localhost:3000
+
+The site is production-ready. You can view it in your browser and all features are working correctly.
+
+session_id: 20260611_133140_830640

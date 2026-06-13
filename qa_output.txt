@@ -1,0 +1,153 @@
+  ┊ review diff
+a/gargo-studio-landing/qa_report.md → b/gargo-studio-landing/qa_report.md
+@@ -0,0 +1,221 @@
++# QA Report — GARGO HAIR STUDIO Landing Page
++
++Reviewed: 2026-06-11
++Built artifact: /opt/data/gargo-studio-landing/dist/index.html (20.42 kB)
++CSS: dist/assets/index-D-rxH_45.css (19.93 kB)
++JS:  dist/assets/index-DwnJqU2-.js (1.69 kB)
++
++---
++
++## Summary
++
++The build succeeds and most sections exist, but the shipped site **does not match the PRD** in multiple material ways. The biggest issues are:
++
++1. Wrong typeface everywhere — **Bebas Neue** is used instead of the PRD-mandated **Space Grotesk**.
++2. The **color palette is wrong** — the build uses a gold accent `#C4A882` and `#0A0A0A` black, instead of PRD's pure `#000000` black and no accent color.
++3. **CTA buttons are gold, not black** as required by PRD §3 (Servicios) and §2 (brand).
++4. **Heading font styling is broken for Spanish copy** — Bebas Neue has no lowercase glyphs, so "Más que un corte", "Servicios & Precios", "Trabajos recientes", "Lo que dicen nuestros clientes", "Encuéntranos" will render with missing/incorrect lowercase characters unless forced to uppercase (they are NOT forced to uppercase in the built HTML).
++5. **Tailwind color tokens are inconsistent** inside the built HTML — both `brand-*` and `gargo-*` class prefixes are mixed in the same document (e.g., `bg-brand-white/95` in nav, `bg-gargo-off-white` on body, `border-gargo-divider` in services). Only the `brand-*` tokens are defined in `tailwind.config.js`. All `gargo-*` classes are **silently ignored by Tailwind**, meaning those elements fall back to unstyled defaults (transparent backgrounds, default text colors). This breaks multiple sections visually.
++6. Source `index.html` loads `/src/styles.css`; built `dist/index.html` loads the compiled CSS — but `main.js` imports `./style.css` (a DIFFERENT file from `styles.css`). Both CSS files exist with conflicting content. The build happened to pick up `style.css` but NOT `styles.css` — so half the custom styles are missing in production.
++7. Mobile menu overlay uses `translate-x-full` via Tailwind but the `.mobile-menu.active { transform: translateX(0) }` override in CSS fights with Tailwind's utility; because Tailwind's `translate-x-full` also applies, opening works via the `.active` class, but closing relies on class removal which reverts to Tailwind's default — functionally OK but fragile.
++8. Meta description is **104 characters**, within the 160 limit — PASS.
++9. Title is **55 characters**, within the 60 limit — PASS.
++10. OG/Twitter images use a relative path `/images/hero.jpg` — will NOT render correctly when shared on social platforms (they require absolute URLs).
++
++**Verdict: FAIL — do not launch.** 6 blocking issues.
++
++---
++
++## Acceptance Criteria Check (PRD §6)
++
++| # | Criterion | Result | Notes |
++|---|-----------|--------|-------|
++| 1 | Page loads <2s on 3G / Lighthouse Perf ≥90 | UNVERIFIED | Cannot run Lighthouse here; preloaded hero.jpg ✓; Google Fonts loaded with display=swap ✓. Fonts NOT subset to Latin (URL says `subset=latin` but that parameter is no longer honored by Google Fonts v2 API — needs `&text=` or unicode-range). |
++| 2 | 100% responsive 320–2560px | PARTIAL | Grids use 1/2/3 col breakpoints ✓. But `gargo-*` classes silently fail (see bug #2) so backgrounds/text colors are wrong on some breakpoints. |
++| 3 | Hero image full-width, object-fit:cover | FAIL | Hero uses a `<div>` with `background-image` + `background-size:cover` — OK visually, but **hero.jpg is not preloaded as an image that the browser can measure for LCP** (preload exists, but `background-image` LCP is penalized by Lighthouse vs `<img>`). PRD explicitly wanted the hero as LCP. |
++| 4 | All 7 portfolio images in 3/2/1 grid | PASS | All 7 present with correct alt text, lazy loading, aspect-square. |
++| 5 | All CTAs link correctly, target=_blank rel=noopener | PASS | Booksy, Instagram, Google Maps links all correct and properly secured. |
++| 6 | Nav smooth-scrolls, mobile menu works | PARTIAL | `scroll-behavior: smooth` set ✓. Mobile menu toggles ✓. But mobile menu z-index (40) is LOWER than header (50), so **hamburger button sits ON TOP of the open overlay** — close button inside overlay (absolute top-4 right-4) will be hidden behind header. Bug. |
++| 7 | Zero console errors | LIKELY FAIL | The JS references `.fade-in` elements via querySelectorAll but NO element in the HTML has class `fade-in`. No runtime error (empty NodeList), but the IntersectionObserver code is dead. Same for `.reveal` class — present in source index.html but STRIPPED from dist/index.html (Tailwind purged nothing, but the source file used `reveal` which is in style.css, not styles.css — mismatch). |
++| 8 | Valid HTML5 | PARTIAL | `<a href="#">` on logo is a placeholder that scrolls to top (OK) but produces an empty fragment. Valid. |
++| 9 | Valid CSS3 | WARN | Build log warned: "@import must precede all other statements". The `@import url(...)` for Google Fonts is AFTER `@tailwind` directives in `styles.css`. In the built CSS this becomes invalid per CSS spec; browsers tolerate it but it's a real spec violation. |
++| 10 | WCAG AA contrast | MIXED | Black-on-off-white ✓. White-on-charcoal ✓. But `#6B6B6B` (text-secondary) on `#F7F7F5` = **4.81:1** — barely passes AA for normal text. `#9A9A9A` (text-muted) on `#1A1A1A` (charcoal) = **5.04:1** ✓. `#9A9A9A` on `#F7F7F5` (footer has `bg-gargo-charcoal` but if the class is ignored it falls back to transparent = off-white from body) — would FAIL at 2.85:1. |
++| 11 | JSON-LD validates | PASS | BarberShop schema with address, geo, aggregateRating, priceRange. Valid. |
++| 12 | Meta title ≤60 chars | PASS | 55 chars. |
++| 13 | Meta description ≤160 chars | PASS | 104 chars. |
++| 14 | Skip-to-content link | PASS | Present, uses Tailwind sr-only + focus variants. |
++| 15 | All images have Spanish alt text | PASS | All 7 portfolio images + logo have proper alt text. |
++| 16 | No external cookies on first load | PASS | No Maps iframe, no analytics. Google Fonts may set cookies depending on browser — mitigated with preconnect. |
++| 17 | Favicon present | PARTIAL | `/images/logo.jpg` used as both favicon and apple-touch-icon. PRD wanted 32×32 and 180×180 PNG exports. Using the full logo.jpg (unknown dimensions) as favicon is inefficient and may render poorly on iOS. |
++
++---
++
++## Bugs Found
++
++### BLOCKING
++
++**B1. Wrong display font (Bebas Neue instead of Space Grotesk)**
++- Location: tailwind.config.js:21, styles.css:21, style.css:60, dist CSS, dist HTML Google Fonts link.
++- Evidence: Google Fonts URL loads `Space+Grotesk` but the CSS overrides it with `font-family: 'Bebas Neue', sans-serif` for `.font-display` and `h1,h2,h3`.
++- Impact: Entire visual identity diverges from PRD §2. Bebas Neue is a display-only all-caps font — lowercase Spanish copy in section headings ("Más que un corte", "Lo que dicen nuestros clientes") will render with missing/tofu glyphs or be auto-uppercased depending on browser.
++- Repro: Open dist/index.html, inspect any H2. Computed font-family is Bebas Neue.
++- Fix: Replace all `Bebas Neue` references with `'Space Grotesk'` and add `font-weight: 700` for headings, `font-weight: 500` for H3.
++
++**B2. Inconsistent Tailwind color token prefixes — `gargo-*` classes are undefined and silently ignored**
++- Location: dist/index.html uses BOTH `brand-*` (nav, hero, philosophy USP cards in source) and `gargo-*` (body, services, gallery, reviews, contact, footer).
++- Evidence: `tailwind.config.js` only defines `brand-*` tokens. No `gargo-*` tokens exist.
++- Impact: The following classes produce NO CSS output:
++  - `bg-gargo-off-white` (body, philosophy, reviews)
++  - `text-gargo-text-primary` (body, philosophy body)
++  - `text-gargo-text-secondary` (USP captions, service durations, subtitle, review caption)
++  - `text-gargo-text-muted` (gallery subtitle, footer)
++  - `bg-gargo-charcoal` (gallery, contact map, footer)
++  - `bg-gargo-black`, `text-gargo-white` (skip link focus state, Booksy CTA)
++  - `border-gargo-divider` (service rows)
++- Result: Services section has no divider borders; gallery section has no dark background; footer has no dark background; body text color is browser default; skip-link focus state is broken.
++- Repro: Inspect `<footer>` in dist — `bg-gargo-charcoal` produces no background-color rule.
++- Fix: Pick ONE prefix (the PRD-aligned `brand-*`) and replace ALL `gargo-*` class names in index.html. Or add `gargo-*` aliases to tailwind.config.js matching PRD colors exactly (`#000000` not `#0A0A0A`).
++
+… omitted 143 diff line(s) across 1 additional file(s)/section(s)
+QA review complete. Report saved to /opt/data/gargo-studio-landing/qa_report.md
+
+VERDICT: FAIL — DO NOT LAUNCH
+
+6 BLOCKING ISSUES FOUND:
+
+1. Wrong typeface throughout
+   - Built site uses Bebas Neue instead of PRD-mandated Space Grotesk
+   - Bebas Neue is an all-caps font; Spanish headings like "Más que un corte" will render incorrectly
+   - Location: tailwind.config.js, styles.css, style.css, Google Fonts link
+
+2. Broken Tailwind color tokens
+   - HTML uses both `brand-*` and `gargo-*` class prefixes
+   - Only `brand-*` is defined in tailwind.config.js
+   - All `gargo-*` classes are silently ignored, leaving:
+     * Gallery section with no dark background
+     * Footer with no dark background  
+     * Service rows with no divider borders
+     * Body text using browser default color
+     * Skip-link focus state broken
+
+3. Wrong CTA button color
+   - Buttons are gold (#C4A882) instead of PRD-required black (#000000)
+   - Gold accent color doesn't exist in PRD palette
+
+4. Spanish heading rendering issues
+   - Bebas Neue has no lowercase glyphs
+   - Mixed-case headings will display incorrectly or with fallback font inconsistency
+
+5. Social share images broken
+   - og:image and twitter:image use relative paths (/images/hero.jpg)
+   - Facebook/Twitter/LinkedIn require absolute URLs
+   - Share previews will show NO image
+
+6. Duplicate conflicting CSS files
+   - index.html loads /src/styles.css
+   - main.js imports ./style.css (different file)
+   - Only style.css is bundled in production
+   - Half the custom styles are missing from the built site
+
+ADDITIONAL ISSUES:
+- Mobile menu close button hidden behind header (z-index conflict)
+- @import after @tailwind violates CSS spec
+- Dead JavaScript code (.fade-in elements don't exist)
+- Hero uses background-image instead of <img> (hurts Lighthouse LCP score)
+- Favicon is full-size JPG instead of optimized 32x32 PNG
+- No prefers-reduced-motion support
+
+WHAT WORKS:
+- All 7 sections present (Nav, Hero, Philosophy, Services, Gallery, Reviews, Contact, Footer)
+- All 7 portfolio images with correct alt text and lazy loading
+- Booksy/Instagram/Maps links correct with proper security attributes
+- JSON-LD structured data valid
+- Meta title (55 chars) and description (104 chars) within limits
+- Skip-to-content link present
+- Mobile menu toggles correctly
+- Smooth scroll enabled
+
+REQUIRED ACTIONS:
+1. Replace all Bebas Neue references with Space Grotesk
+2. Unify all Tailwind color tokens to one prefix (brand-*) matching PRD palette exactly
+3. Change CTA buttons to black (#000000) with white text
+4. Make og:image/twitter:image absolute URLs (https://www.gargohairstudio.com/images/hero.jpg)
+5. Consolidate styles.css and style.css into one file
+6. Rebuild and re-test
+
+Estimated fix time: 2-3 hours for developer familiar with codebase.
+
+See full report at /opt/data/gargo-studio-landing/qa_report.md for detailed evidence, reproduction steps, and complete test plan.
+
+session_id: 20260611_134133_8d09db

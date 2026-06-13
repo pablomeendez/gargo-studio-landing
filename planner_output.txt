@@ -1,0 +1,194 @@
+  ┊ review diff
+a/gargo-studio-landing/images/dims.py → b/gargo-studio-landing/images/dims.py
+@@ -0,0 +1,28 @@
++import os, struct
++for f in sorted(os.listdir('.')):
++    if not f.endswith('.jpg'): continue
++    with open(f, 'rb') as fh:
++        d = fh.read(2)
++        if d != b'\xff\xd8':
++            print(f'{f}: not jpg')
++            continue
++        while True:
++            d = fh.read(2)
++            if d != b'\xff':
++                break
++            marker = fh.read(1)
++            if marker in b'\xd8\xd9\x00':
++                break
++            if marker in b'\xd0\xd1\xd2\xd3\xd4\xd5\xd6\xd7':
++                continue
++            if marker in b'\xe0\xe1\xe2':
++                fh.read(struct.unpack('>H', fh.read(2))[0] - 2)
++                continue
++            if marker in b'\xc0\xc1\xc2\xc3\xc4\xc5\xc6\xc7':
++                fh.read(3)
++                h, w = struct.unpack('>HH', fh.read(4))
++                print(f'{f}: {w} x {h}')
++                break
++            else:
++                l = struct.unpack('>H', fh.read(2))[0] - 2
++                fh.read(l)
+  ┊ review diff
+a/gargo-studio-landing/images/check.py → b/gargo-studio-landing/images/check.py
+@@ -0,0 +1,7 @@
++import os
++for f in sorted(os.listdir('.')):
++    if not f.endswith('.jpg'):
++        continue
++    with open(f, 'rb') as fh:
++        data = fh.read(16)
++    print(f'{f}: {data.hex()}')
+  ┊ review diff
+a/gargo-studio-landing/images/dims2.py → b/gargo-studio-landing/images/dims2.py
+@@ -0,0 +1,37 @@
++import os, struct
++
++for f in sorted(os.listdir('.')):
++    if not f.endswith('.jpg'):
++        continue
++    with open(f, 'rb') as fh:
++        data = fh.read(2)
++        if data != b'\xff\xd8':
++            print(f'{f}: not jpg')
++            continue
++        while True:
++            b = fh.read(1)
++            if b != b'\xff':
++                break
++            marker = fh.read(1)
++            if marker == b'\xd9':  # EOI
++                break
++            if marker == b'\xd8':  # SOI
++                continue
++            if marker == b'\x00':  # padding
++                continue
++            # read length
++            len_bytes = fh.read(2)
++            if len(len_bytes) != 2:
++                break
++            length = struct.unpack('>H', len_bytes)[0]
++            if length < 2:
++                break
++            if marker in b'\xc0\xc1\xc2\xc3\xc4\xc5\xc6\xc7':
++                # SOF marker
++                fh.read(1)  # precision
++                h, w = struct.unpack('>HH', fh.read(4))
++                print(f'{f}: {w} x {h}')
++                break
++            else:
++                # skip segment
++                fh.read(length - 2)
+  ┊ review diff
+a/gargo-studio-landing/PRD.md → b/gargo-studio-landing/PRD.md
+@@ -1,432 +1,550 @@
+-# Product Requirements Document
+-
+-## Product Name
+-**GARGO HAIR STUDIO — Single-Page Landing Website**
+-
+----
++# GARGO HAIR STUDIO — Product Requirements Document
+ 
+ ## 1. Overview
+ 
+-### What we are building
+-A single-page, responsive landing website for **GARGO HAIR STUDIO**, a premium barbershop located in the Cuatro Caminos neighbourhood of A Coruña, Spain. The site functions as a digital storefront: it establishes brand credibility, showcases the studio’s work, communicates services and prices, and drives visitors to book an appointment via the existing Booksy profile.
+-
+-### Why we are building it
+-- **Conversion:** Turn Instagram and word-of-mouth traffic into confirmed bookings.
+-- **Trust:** Highlight the 5.0-star Booksy rating and portfolio photography to reduce friction for new clients.
+-- **Local SEO:** Capture search intent for “barbería A Coruña”, “barbería Cuatro Caminos”, and “corte de pelo A Coruña”.
+-- **Brand:** Translate the industrial-minimalist interior aesthetic into a cohesive digital experience.
+-
+-### What we are NOT building
+-- No online booking engine (redirect to Booksy).
+-- No contact form (phone/Instagram/address only).
+-- No multi-page architecture (single `index.html`).
+-- No blog, shop, or appointment management system.
+-- No Google Maps iframe (avoids third-party cookies, slow loads, and layout shift).
++### What We Are Building
++A single-page landing website for GARGO HAIR STUDIO, a premium barbershop in Cuatro Caminos, A Coruña. The site is designed to drive appointment bookings via Booksy, showcase the barbershop's portfolio, communicate its brand identity (industrial-minimalist, masculine, sophisticated), and establish trust with prospective clients.
++
++### Why We Are Building It
++GARGO HAIR STUDIO currently has no dedicated web presence beyond Booksy and Instagram. A landing page serves as:
++- A stable, indexed destination for Google search traffic ("barbería Cuatro Caminos A Coruña")
++- A conversion hub that funnels visitors into Booksy reservations
++- A brand credibility tool that communicates quality and professionalism before the client ever enters the shop
++- A portfolio showcase that demonstrates the barber's skill across cuts, beards, and color work
++
++### Target Audience
++- Men aged 20–50 in A Coruña seeking a premium barber experience
++- Parents looking for kids' cuts (hasta 10 años)
++- Clients who value personal styling, face-shape analysis, and beard integration
++- Walk-in prospects researching "barbería cerca de mí" in Cuatro Caminos
+ 
+ ---
+ 
+ ## 2. Brand Identity
+ 
++### Core Identity
++- **Name:** GARGO HAIR STUDIO
++- **Slogan:** "INVEST IN YOURSELF"
++- **Business Type:** Empresario (solo proprietor barber)
++- **Location:** Rúa Nicomedes Pastor Díaz 1, 15006 A Coruña (Cuatro Caminos)
++- **Rating:** 5.0 / 5 — 56 reseñas (Booksy)
++
++### Mood & Visual Direction
++- **Mood:** Masculine, sophisticated, urban, premium-but-approachable
++- **Visual Style:** Industrial-minimalist — concrete walls, black furniture, plants, professional photography
++- **Photography:** High-contrast, desaturated, moody lighting; faces and texture emphasized
++- **Tone of Voice:** Confident, direct, premium, personal. No fluff. No hype. Spanish-first.
++
+ ### Color Palette
++
+ | Token | Hex | Usage |
+ |-------|-----|-------|
+-| `--color-black` | `#000000` | CTA backgrounds, primary text on light backgrounds, borders |
+-| `--color-charcoal` | `#1A1A1A` | Section backgrounds (portfolio, footer), deep text tones |
+-| `--color-off-white` | `#F7F7F5` | Primary page background, alternating section fill |
+-| `--color-white` | `#FFFFFF` | Card backgrounds, text on dark sections, nav background |
+-| `--color-text-primary` | `#111111` | Body text on light backgrounds |
+-| `--color-text-secondary` | `#6B6B6B` | Captions, durations, secondary labels |
+-| `--color-text-muted` | `#9A9A9A` | Footer text, subtle captions on dark backgrounds |
+-| `--color-divider` | `#E5E5E5` | Horizontal rules, table borders, card outlines |
++| `--color-black` | `#0A0A0A` | Primary backgrounds, hero overlay, navbar, footer |
++| `--color-white` | `#FFFFFF` | Primary text on dark backgrounds, logo negative space |
++| `--color-gray-100` | `#F5F5F5` | Light section backgrounds (services, portfolio) |
++| `--color-gray-400` | `#9CA3AF` | Muted text, secondary labels, prices |
++| `--color-gray-600` | `#4B5563` | Body text on light backgrounds, borders |
++| `--color-gray-800` | `#1F1F1F` | Card backgrounds, subtle elevation on dark |
++| `--color-accent` | `#C4A882` | Gold/taupe accent — CTAs, hover states, underline accents. Represents warmth, premium quality. Derived from warm tones in portfolio shots. |
+ 
+… omitted 871 diff line(s) across 1 additional file(s)/section(s)
+Done. The PRD has been saved to:
+
+/opt/data/gargo-studio-landing/PRD.md
+
+550 lines, 13 sections. Here's what's inside:
+
+1. **Overview** — The why: drive Booksy bookings, build Google search presence, establish brand credibility
+2. **Brand Identity** — Exact hex colors (#0A0A0A black, #FFFFFF white, #C4A882 accent, gray scale), Bebas Neue + Inter typography, industrial-minimalist mood, logo usage specs
+3. **Sections & Content (Wireframe)** — 7 sections with exact Spanish copy:
+   - Navbar (sticky, blur backdrop)
+   - Hero (full-bleed hero.jpg, "INVEST IN YOURSELF" accent, RESERVAR CTA)
+   - Social Proof Band (5.0 stars, 5 services, 1 barbero)
+   - Servicios (5 cards: Corte €16, Corte y Barba €24, Arreglo de Barba €10, Corte Niños €15, Corte Pelo Largo €20)
+   - Portfolio (6 portfolio images + color-fantasia.jpg in responsive grid)
+   - Por Qué Elegirnos (Visajismo, Servicio de Autor, Armonía Pelo y Barba)
+   - Reservar CTA (dark overlay, Booksy link)
+   - Footer (address, Instagram, rating)
+4. **Technical Requirements** — Vite + Tailwind, mobile-first responsive, Lighthouse targets (Perf ≥95, SEO 100), JSON-LD LocalBusiness schema, Open Graph, `lang="es"`
+5. **Data Model** — Static, no backend. All data hardcoded in HTML/JSON-LD.
+6. **Suggested Stack** — Vite, Tailwind CSS, Google Fonts, Netlify/Vercel
+7. **MVP Scope** — Included vs. Out of Scope (no custom booking, no CMS, no contact form, no maps embed, no GA4)
+8. **User Flow** — Google → Hero → Servicios/Portfolio → Booksy
+9. **Acceptance Criteria** — 28 checkboxes covering content, visual, responsive, performance, SEO, accessibility, functionality
+10. **7-Day Build Roadmap** — Day-by-day breakdown from project init to deploy
+11. **Launch Checklist** — 13 pre-flight items
+12. **Risks** — 6 risks with impact/likelihood/mitigation
+13. **Next Step for Developer** — Initialize Vite, copy assets, set up fonts, build skeleton, deploy early
+
+Image dimensions from the assets folder were incorporated into the wireframe specs (e.g., hero.jpg 1152×768, hero_640.jpg for mobile srcset, portfolio1-6.jpg sizes).
+
+session_id: 20260611_132806_0a584b

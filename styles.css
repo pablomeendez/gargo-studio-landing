@@ -252,7 +252,7 @@ address {
 .hero-bg {
   position: absolute;
   inset: 0;
-  background-image: url('/images/hero.jpg');
+  background-image: url('/images/portfolio2.jpg');
   background-size: cover;
   background-position: center;
   opacity: 1;
@@ -334,83 +334,90 @@ address {
   margin-bottom: 24px;
 }
 
-/* ---- Philosophy ---- */
-.philosophy {
+/* ---- Barber ---- */
+.barber {
   background: var(--bg-surface);
 }
 
-.philosophy .section-watermark {
+.barber .section-watermark {
   top: -60px;
   right: -40px;
   color: rgba(46, 46, 41, 0.6);
 }
 
-.philosophy-grid {
+.barber-grid {
   position: relative;
   z-index: 1;
   display: grid;
-  grid-template-columns: 1.2fr 0.8fr;
+  grid-template-columns: 0.8fr 1.2fr;
   gap: 80px;
   max-width: 1300px;
   margin: 0 auto;
 }
 
-.philosophy-text p {
-  font-size: 1.25rem;
-  line-height: 1.7;
+.barber-image img {
+  width: 100%;
+  aspect-ratio: 3/4;
+  object-fit: cover;
+  border-radius: 0;
+}
+
+.barber-bio {
+  font-size: 1.125rem;
+  line-height: 1.6;
   color: var(--text-secondary);
   max-width: 540px;
   margin-bottom: 48px;
 }
 
-.philosophy-pillars {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
-
-.pillar {
-  display: flex;
-  align-items: flex-start;
-  gap: 20px;
-  padding: 20px 0;
-  border-top: 1px solid var(--border);
-}
-
-.pillar:first-child {
+.barber-details {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+  padding-top: 32px;
   border-top: 2px solid var(--accent);
 }
 
-.pillar-number {
+.barber-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.detail-number {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1;
+}
+
+.detail-label {
   font-family: var(--font-mono);
   font-size: 0.75rem;
-  color: var(--accent);
-  min-width: 28px;
-  padding-top: 4px;
-  letter-spacing: 0.05em;
-}
-
-.pillar h3 {
-  font-family: var(--font-display);
-  font-size: 1.25rem;
-  font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  line-height: 1.3;
+}
+
+/* ---- CTA Bar ---- */
+.cta-bar {
+  background: var(--bg-surface);
+  padding: 64px 32px;
+  text-align: center;
+}
+
+.cta-bar-text {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  margin-bottom: 16px;
   color: var(--text-primary);
-  margin-bottom: 4px;
 }
 
-.pillar p {
-  font-size: 0.95rem;
-  color: var(--text-secondary);
-  margin-bottom: 0;
-}
-
-.philosophy-image img {
-  width: 100%;
-  aspect-ratio: 3/4;
-  object-fit: cover;
-  border-radius: 0;
+.cta-bar .btn-accent {
+  display: inline-block;
+  padding: 16px 40px;
 }
 
 /* ---- Services ---- */
@@ -894,6 +901,40 @@ address {
   align-items: stretch;
 }
 
+/* ---- Contact Hours ---- */
+.contact-hours {
+  margin-top: 32px;
+}
+
+.hours-title {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+
+.hours-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.hours-day {
+  font-weight: 600;
+}
+
+.hours-time {
+  color: var(--text-secondary);
+}
+
+.hours-closed {
+  color: var(--text-muted);
+  opacity: 0.6;
+}
+
 /* ---- Footer ---- */
 .footer {
   position: relative;
@@ -929,6 +970,29 @@ address {
 .footer-small {
   font-size: 0.65rem;
   color: var(--border-light);
+}
+
+/* ---- WhatsApp Float ---- */
+.whatsapp-float {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 56px;
+  height: 56px;
+  background: #25D366;
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9998;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  transition: transform 0.2s var(--ease-out-expo), box-shadow 0.2s;
+}
+
+.whatsapp-float:hover {
+  transform: scale(1.08);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.4);
 }
 
 /* ---- Animations ---- */
@@ -980,16 +1044,16 @@ address {
 
 /* ---- Responsive ---- */
 @media (max-width: 1024px) {
-  .philosophy-grid {
+  .barber-grid {
     grid-template-columns: 1fr;
     gap: 48px;
   }
 
-  .philosophy-image {
+  .barber-image {
     order: -1;
   }
 
-  .philosophy-image img {
+  .barber-image img {
     aspect-ratio: 4/3;
     max-height: 400px;
   }
@@ -1093,6 +1157,18 @@ address {
 
   .mobile-menu-link {
     font-size: 2rem;
+  }
+
+  .whatsapp-float {
+    bottom: 16px;
+    right: 16px;
+    width: 48px;
+    height: 48px;
+  }
+
+  .whatsapp-float svg {
+    width: 24px;
+    height: 24px;
   }
 }
 

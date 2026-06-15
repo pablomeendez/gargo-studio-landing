@@ -6,6 +6,8 @@
 (function () {
   'use strict';
 
+  document.documentElement.classList.add('js-enabled');
+
   // ---- DOM References ----
   const nav = document.querySelector('.nav');
   const menuToggle = document.getElementById('menu-toggle');

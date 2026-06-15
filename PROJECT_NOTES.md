@@ -20,7 +20,8 @@
 - Location wording: A Coruña, zona Cuatro Caminos / A Gaiteira.
 - Brand slogan visually confirmed: `INVEST IN YOURSELF`.
 - Aggregate Booksy rating: 5.0 with 56 reseñas.
-- Phone/WhatsApp: unavailable publicly; Booksy requires login/contact. The site must not show phone or WhatsApp CTAs.
+- Phone: user-provided number `604 96 60 12`; public site may show it only as `Teléfono` with `tel:+34604966012`.
+- WhatsApp: not confirmed. Do not show WhatsApp wording, icons, wa.me links, or WhatsApp CTAs.
 
 ## Booksy about text in use
 
@@ -57,7 +58,7 @@
 
 ## Unknowns / TODOs
 
-- Verify phone/contact only if Booksy or another public official source exposes it without login. Until then, do not add phone or WhatsApp.
+- Do not add WhatsApp unless confirmed by a user-provided or public official source.
 - Re-check Booksy before future edits to services, prices, opening hours, rating/review count, or review text.
 - If downloading external Booksy images later, preserve exact source URL notes and avoid fake attribution.
 - Consider generating optimized WebP/AVIF variants from existing assets if performance work is requested.

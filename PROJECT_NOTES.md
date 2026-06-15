@@ -52,8 +52,7 @@
 ## Asset notes
 
 - Current redesign uses existing repository images: `/public/images/portfolio1.jpg` through `/public/images/portfolio6.jpg`, plus existing logo/favicon assets.
-- Studio section includes `/images/studio-barbershop.jpg`, downloaded from the verified Booksy primary shop/business photo URL:
-  https://d375139ucebi94.cloudfront.net/region2/es/153564/biz_photo/a71cd1729d414470a01197780f9311-gargo-hair-studio-biz-photo-db5ca051b41f43f4b02682e14f8d81-booksy.jpeg?size=640x427
+- Studio section uses `/images/studio-interior-clean.jpg`, a clean interior photo provided directly by the user at `/opt/data/image_cache/img_653eb1fda250.jpg` on 2026-06-15.
 - Instagram grid was login-blocked in prior work, so Instagram is not used as a factual data source.
 
 ## Unknowns / TODOs

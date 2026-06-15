@@ -97,12 +97,12 @@ CSS:
 
 ## 5. Add WhatsApp Floating Button
 
-Add a fixed floating WhatsApp button at the bottom-right of the page. The number should be a placeholder that the user can replace later.
+TODO: verify WhatsApp/phone from Booksy before adding. Do not use placeholder phone numbers.
 
 HTML (add at the end of `<body>`, before the lightbox):
 ```html
-<!-- WhatsApp Floating Button -->
-<a href="https://wa.me/34600000000?text=Hola%2C%20quiero%20reservar%20una%20cita%20en%20GARGO%20HAIR%20STUDIO" 
+<!-- WhatsApp Floating Button: TODO verify WhatsApp/phone from Booksy before adding href -->
+<a href="#" 
    class="whatsapp-float" 
    target="_blank" 
    rel="noopener noreferrer"

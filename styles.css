@@ -336,6 +336,7 @@ h3 { font-size: clamp(1.35rem, 3vw, 2.2rem); }
   font-size: 0.72rem;
   text-transform: uppercase;
 }
+.footer-attribution { text-transform: none; }
 
 .js-enabled [data-animate] { opacity: 1; transform: translateY(18px); transition: transform 620ms var(--ease); }
 .js-enabled [data-animate="slide-left"] { transform: translateX(-22px); }

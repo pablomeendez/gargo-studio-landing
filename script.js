@@ -12,7 +12,7 @@
   const menuToggle = document.getElementById('menu-toggle');
   const mobileMenu = document.getElementById('mobile-menu');
   const mobileLinks = document.querySelectorAll('[data-nav-close]');
-  const animatedElements = document.querySelectorAll('[data-animate]');
+  let animatedElements = document.querySelectorAll('[data-animate]');
   const progress = document.querySelector('.scroll-progress');
   let menuOpen = false;
 
@@ -64,6 +64,11 @@
   }
 
   function initAnimations() {
+    document.querySelectorAll('.service-row').forEach(function (row, index) {
+      row.setAttribute('data-animate', 'service-row');
+      row.style.setProperty('--reveal-delay', (index * 70) + 'ms');
+    });
+    animatedElements = document.querySelectorAll('[data-animate]');
     if (!animatedElements.length) return;
     if (!('IntersectionObserver' in window)) {
       animatedElements.forEach(function (el) { el.classList.add('animated'); });

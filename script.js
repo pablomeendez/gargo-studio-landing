@@ -70,17 +70,25 @@
     });
     animatedElements = document.querySelectorAll('[data-animate]');
     if (!animatedElements.length) return;
-    if (!('IntersectionObserver' in window)) {
+
+    const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion || !('IntersectionObserver' in window)) {
       animatedElements.forEach(function (el) { el.classList.add('animated'); });
       return;
     }
+
     const observer = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
-        if (!entry.isIntersecting) return;
-        entry.target.classList.add('animated');
-        observer.unobserve(entry.target);
+        if (entry.isIntersecting && entry.intersectionRatio >= 0.12) {
+          entry.target.classList.add('animated');
+          return;
+        }
+
+        if (!entry.isIntersecting) {
+          entry.target.classList.remove('animated');
+        }
       });
-    }, { threshold: 0.12, rootMargin: '0px 0px -70px 0px' });
+    }, { threshold: [0, 0.12], rootMargin: '0px 0px -12% 0px' });
     animatedElements.forEach(function (el) { observer.observe(el); });
   }
 

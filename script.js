@@ -1,238 +1,92 @@
 /* ============================================================
-   GARGO HAIR STUDIO — Brutalist Editorial
-   Interactions & Animations
+   GARGO HAIR STUDIO — Interactions
+   Production JS entry for Vite module bundling.
+   Animation fallback: content is visible unless .js-enabled is added.
    ============================================================ */
-
 (function () {
   'use strict';
 
   document.documentElement.classList.add('js-enabled');
 
-  // ---- DOM References ----
   const nav = document.querySelector('.nav');
   const menuToggle = document.getElementById('menu-toggle');
   const mobileMenu = document.getElementById('mobile-menu');
-  const mobileLinks = mobileMenu.querySelectorAll('[data-nav-close]');
+  const mobileLinks = document.querySelectorAll('[data-nav-close]');
   const animatedElements = document.querySelectorAll('[data-animate]');
-  const lightbox = document.getElementById('lightbox');
-  const lightboxImg = document.getElementById('lightbox-img');
-
-  // ---- State ----
+  const progress = document.querySelector('.scroll-progress');
   let menuOpen = false;
 
-  // ---- Mobile Menu ----
-  function openMenu() {
-    menuOpen = true;
-    mobileMenu.classList.add('active');
-    mobileMenu.setAttribute('aria-hidden', 'false');
-    menuToggle.classList.add('active');
-    menuToggle.setAttribute('aria-expanded', 'true');
-    document.body.style.overflow = 'hidden';
+  function setMenu(open) {
+    if (!menuToggle || !mobileMenu) return;
+    menuOpen = open;
+    mobileMenu.classList.toggle('active', open);
+    mobileMenu.setAttribute('aria-hidden', open ? 'false' : 'true');
+    menuToggle.classList.toggle('active', open);
+    menuToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    document.body.style.overflow = open ? 'hidden' : '';
   }
 
-  function closeMenu() {
-    menuOpen = false;
-    mobileMenu.classList.remove('active');
-    mobileMenu.setAttribute('aria-hidden', 'true');
-    menuToggle.classList.remove('active');
-    menuToggle.setAttribute('aria-expanded', 'false');
-    document.body.style.overflow = '';
-  }
-
-  function toggleMenu() {
-    if (menuOpen) {
-      closeMenu();
-    } else {
-      openMenu();
+  function updateScrollUi() {
+    const scrollTop = window.scrollY || window.pageYOffset;
+    if (nav) nav.classList.toggle('is-scrolled', scrollTop > 24);
+    if (progress) {
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const percent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+      progress.style.width = percent + '%';
     }
   }
 
-  menuToggle.addEventListener('click', toggleMenu);
-
-  mobileLinks.forEach(function (link) {
-    link.addEventListener('click', function () {
-      closeMenu();
+  function initMenu() {
+    if (!menuToggle || !mobileMenu) return;
+    menuToggle.addEventListener('click', function () { setMenu(!menuOpen); });
+    mobileLinks.forEach(function (link) {
+      link.addEventListener('click', function () { setMenu(false); });
     });
-  });
-
-  // Close menu on Escape
-  document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape') {
-      if (lightbox.classList.contains('active')) {
-        closeLightbox();
-        return;
-      }
-      if (menuOpen) {
-        closeMenu();
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape' && menuOpen) {
+        setMenu(false);
         menuToggle.focus();
       }
-    }
-  });
-
-  // ---- Lightbox ----
-  function openLightbox(src) {
-    lightboxImg.src = src;
-    lightbox.classList.add('active');
-    lightbox.setAttribute('aria-hidden', 'false');
-    document.body.style.overflow = 'hidden';
-  }
-
-  function closeLightbox() {
-    lightbox.classList.remove('active');
-    lightbox.setAttribute('aria-hidden', 'true');
-    document.body.style.overflow = '';
-  }
-
-  // Click on gallery items
-  document.querySelectorAll('.gallery-item').forEach(function (item) {
-    item.addEventListener('click', function (e) {
-      var img = item.querySelector('img');
-      if (img) {
-        openLightbox(img.src);
-      }
-    });
-  });
-
-  // Close lightbox on background click
-  lightbox.addEventListener('click', function (e) {
-    if (e.target === lightbox) {
-      closeLightbox();
-    }
-  });
-
-  // Close lightbox on close button
-  var closeBtn = lightbox.querySelector('.lightbox-close');
-  if (closeBtn) {
-    closeBtn.addEventListener('click', function (e) {
-      e.stopPropagation();
-      closeLightbox();
     });
   }
 
-  // ---- Scroll-Triggered Animations ----
-  function initScrollAnimations() {
-    if (!('IntersectionObserver' in window)) {
-      // Fallback: show everything immediately
-      animatedElements.forEach(function (el) {
-        el.classList.add('animated');
-      });
-      return;
-    }
-
-    var observerOptions = {
-      threshold: 0.1,
-      rootMargin: '0px 0px -60px 0px'
-    };
-
-    var observer = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          var el = entry.target;
-          var delay = parseFloat(el.getAttribute('data-delay')) || 0;
-
-          if (delay > 0) {
-            setTimeout(function () {
-              el.classList.add('animated');
-            }, delay * 1000);
-          } else {
-            el.classList.add('animated');
-          }
-
-          observer.unobserve(el);
-        }
-      });
-    }, observerOptions);
-
-    animatedElements.forEach(function (el) {
-      observer.observe(el);
-    });
-  }
-
-  // ---- Page Load: Staggered Hero Elements ----
-  function initHeroLoad() {
-    var heroEls = document.querySelectorAll('[data-animate]');
-    // Elements already handled by IntersectionObserver for below-fold
-    // For hero (above fold), ensure they animate on load
-    if ('IntersectionObserver' in window) {
-      // Hero elements should be visible immediately; the observer will catch them
-      // But add a small delay for the staggered effect
-      setTimeout(function () {
-        var heroSection = document.querySelector('.hero');
-        if (heroSection) {
-          var heroAnimated = heroSection.querySelectorAll('[data-animate]');
-          heroAnimated.forEach(function (el) {
-            var delay = parseFloat(el.getAttribute('data-delay')) || 0;
-            setTimeout(function () {
-              el.classList.add('animated');
-            }, delay * 1000 + 100);
-          });
-        }
-      }, 100);
-    } else {
-      // No observer: show everything
-      animatedElements.forEach(function (el) {
-        el.classList.add('animated');
-      });
-    }
-  }
-
-  // ---- Smooth Scroll for anchor links (non-mobile-menu links) ----
   function initSmoothScroll() {
     document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
-      // Skip mobile menu links (handled separately)
-      if (anchor.hasAttribute('data-nav-close')) return;
-
-      anchor.addEventListener('click', function (e) {
-        var targetId = this.getAttribute('href');
-        if (targetId === '#') return;
-        var target = document.querySelector(targetId);
-        if (target) {
-          e.preventDefault();
-          var offset = 20;
-          var top = target.getBoundingClientRect().top + window.pageYOffset - offset;
-          window.scrollTo({ top: top, behavior: 'smooth' });
-        }
+      anchor.addEventListener('click', function (event) {
+        const targetId = anchor.getAttribute('href');
+        if (!targetId || targetId === '#') return;
+        const target = document.querySelector(targetId);
+        if (!target) return;
+        event.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
       });
     });
   }
 
-  // ---- Parallax Hero Background ----
-  function initParallax() {
-    window.addEventListener('scroll', function () {
-      var heroBg = document.querySelector('.hero-bg');
-      if (heroBg) {
-        var scrollY = window.scrollY || window.pageYOffset;
-        var heroSection = document.querySelector('.hero');
-        if (heroSection && scrollY < heroSection.offsetHeight) {
-          heroBg.style.transform = 'translateY(' + (scrollY * 0.3) + 'px)';
-        }
-      }
-    });
+  function initAnimations() {
+    if (!animatedElements.length) return;
+    if (!('IntersectionObserver' in window)) {
+      animatedElements.forEach(function (el) { el.classList.add('animated'); });
+      return;
+    }
+    const observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('animated');
+        observer.unobserve(entry.target);
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -70px 0px' });
+    animatedElements.forEach(function (el) { observer.observe(el); });
   }
 
-  // ---- Scroll Progress ----
-  function initScrollProgress() {
-    window.addEventListener('scroll', function () {
-      var scrollProgress = document.querySelector('.scroll-progress');
-      if (scrollProgress) {
-        var scrollTop = window.scrollY || window.pageYOffset;
-        var docHeight = document.documentElement.scrollHeight - window.innerHeight;
-        var scrollPercent = (scrollTop / docHeight) * 100;
-        scrollProgress.style.width = scrollPercent + '%';
-      }
-    });
-  }
-
-  // ---- Init ----
   function init() {
-    initScrollAnimations();
-    initHeroLoad();
+    initMenu();
     initSmoothScroll();
-    initParallax();
-    initScrollProgress();
+    initAnimations();
+    updateScrollUi();
+    window.addEventListener('scroll', updateScrollUi, { passive: true });
   }
 
-  // Run on DOM ready
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
   } else {

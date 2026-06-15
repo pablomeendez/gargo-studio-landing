@@ -248,6 +248,18 @@ h3 { font-size: clamp(1.35rem, 3vw, 2.2rem); }
 .studio .section-kicker, .location .section-kicker { color: var(--beige-dark); margin-bottom: 22px; }
 .studio-copy { font-size: clamp(1.1rem, 2vw, 1.48rem); color: #3c3934; }
 .studio-copy p { max-width: 720px; }
+.studio-photo {
+  margin: clamp(36px, 6vw, 72px) 0 0;
+  overflow: hidden;
+  background: var(--steel);
+  box-shadow: var(--shadow);
+}
+.studio-photo img {
+  width: 100%;
+  height: clamp(260px, 46vw, 560px);
+  object-fit: cover;
+  filter: grayscale(100%) contrast(1.04);
+}
 .source-chip { display: inline-block; margin-top: 28px; padding: 10px 12px; border: 1px solid var(--line-dark); color: var(--beige-dark); }
 
 .section-heading-row {

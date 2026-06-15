@@ -21,6 +21,7 @@
 - Brand slogan visually confirmed: `INVEST IN YOURSELF`.
 - Aggregate Booksy rating: 5.0 with 56 reseñas.
 - Phone: user-provided number `604 96 60 12`; public site may show it only as `Teléfono` with `tel:+34604966012`.
+- Email: user-provided address `gargohairstudio@gmail.com`; public site may show it as `Email / Correo` with `mailto:gargohairstudio@gmail.com`.
 - WhatsApp: not confirmed. Do not show WhatsApp wording, icons, wa.me links, or WhatsApp CTAs.
 
 ## Booksy about text in use

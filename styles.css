@@ -362,6 +362,8 @@ h3 { font-size: clamp(1.35rem, 3vw, 2.2rem); }
   .gallery-grid { grid-template-columns: 1fr; grid-auto-rows: minmax(240px, 74vw); }
   .gallery-wide { grid-column: span 1; }
   .hours-list div { grid-template-columns: 1fr; gap: 4px; }
+  .js-enabled [data-animate="slide-left"],
+  .js-enabled [data-animate="slide-right"] { transform: translateY(18px); }
 }
 
 @media (prefers-reduced-motion: reduce) {

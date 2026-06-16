@@ -64,9 +64,10 @@
   }
 
   function initAnimations() {
+    const isMobile = window.matchMedia && window.matchMedia('(max-width: 560px)').matches;
     document.querySelectorAll('.service-row').forEach(function (row, index) {
       row.setAttribute('data-animate', 'service-row');
-      row.style.setProperty('--reveal-delay', (index * 70) + 'ms');
+      row.style.setProperty('--reveal-delay', (index * (isMobile ? 28 : 70)) + 'ms');
     });
     animatedElements = document.querySelectorAll('[data-animate]');
     if (!animatedElements.length) return;
@@ -77,18 +78,25 @@
       return;
     }
 
+    const observerOptions = isMobile
+      ? { threshold: [0, 0.08], rootMargin: '0px 0px -6% 0px' }
+      : { threshold: [0, 0.12], rootMargin: '0px 0px -12% 0px' };
+
     const observer = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
-        if (entry.isIntersecting && entry.intersectionRatio >= 0.12) {
+        if (entry.isIntersecting && entry.intersectionRatio >= (isMobile ? 0.08 : 0.12)) {
           entry.target.classList.add('animated');
           return;
         }
 
         if (!entry.isIntersecting) {
-          entry.target.classList.remove('animated');
+          const rect = entry.target.getBoundingClientRect();
+          const resetOffset = isMobile ? 180 : 120;
+          const clearlyOutside = rect.bottom < -resetOffset || rect.top > window.innerHeight + resetOffset;
+          if (clearlyOutside) entry.target.classList.remove('animated');
         }
       });
-    }, { threshold: [0, 0.12], rootMargin: '0px 0px -12% 0px' });
+    }, observerOptions);
     animatedElements.forEach(function (el) { observer.observe(el); });
   }
 
